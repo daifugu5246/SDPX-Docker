@@ -1,0 +1,58 @@
+version: '3.8'
+services:
+  dev:
+    image: flask-api
+    container_name: api-dev
+    ports:
+      - 8081:5000
+    links:
+      - mysql-dev
+    depends_on:
+      - mysql-dev
+    environment:
+      PORT: 5000
+      FLASK_DEBUG: 1
+      MYSQL_ROOT_PASSWORD: dev1234
+      MYSQL_DATABASE: devDB
+      MYSQL_HOST: mysql-dev
+
+  test:
+    image: flask-api
+    container_name: api-test
+    ports:
+      - 8082:5000
+    links:
+      - mysql-test
+    depends_on:
+      - mysql-test
+    environment:
+      PORT: 5000
+      FLASK_DEBUG: 1
+      MYSQL_ROOT_PASSWORD: test1234
+      MYSQL_DATABASE: testDB
+      MYSQL_HOST: mysql-test
+
+  mysql-dev:
+    image: mysql:5.7
+    container_name: db-dev
+    ports:
+      - 3308:3306
+    volumes:
+      - ./devDB/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./data-dev:/var/lib/mysql 
+    environment:
+      MYSQL_ROOT_PASSWORD: dev1234
+      MYSQL_DATABASE: devDB
+
+  mysql-test:
+    image: mysql:5.7
+    container_name: db-test
+    ports:
+      - 3309:3306
+    volumes:
+      - ./testDB/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./data-test:/var/lib/mysql 
+    environment:
+      MYSQL_ROOT_PASSWORD: test1234
+      MYSQL_DATABASE: testDB
+      
