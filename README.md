@@ -1,2 +1,3 @@
-- docker build -t flask-api .
-- docker compose up
+Command to run
+===
+docker build -t flask-api .  docker compose up
