@@ -16,7 +16,7 @@ def hello_world():
 @app.route('/data', methods=['GET'])
 def get_data():
     cur = mysql.connection.cursor()
-    cur.execute('''SELECT Fname, Age FROM Users''')
+    cur.execute('''SELECT * FROM Users''')
     data = cur.fetchall()
     cur.close()
     return jsonify(data)
